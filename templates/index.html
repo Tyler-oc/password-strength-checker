@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="screen">
+        <div class="password-box">
+            <label id="password-label" for="password">Enter your password here</label>
+            <input id="password" type="text">
+        </div>
+        <div class="output-box">
+            <p id="strength"></p>
+            <p id="bits-of-entropy"></p>
+            <p id="time-to-crack"></p>
+        </div>
+        <div id="info">
+            <p>Note that this website only checks your passwords entropy and if it is a commonly found password.
+                There are other considerations to be made when creating a password.
+            </p>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#password').on('input', function(){
+                let password = $(this).val();
+                $.ajax({
+                    url: '/strength',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'password': password}),
+                    success: function(response){
+                        $('#strength').text(response.password_strength);
+
+                        let strength = response.password_strength.toLowerCase();
+                        $('#strength').removeClass('weak medium strong').addClass(strength);
+
+                        $('#bits-of-entropy').text('Your password has ' + response.bits_of_entropy + ' bits of entropy')
+                        $('#time-to-crack').text('Your password would take ' + response.time_to_crack + ' to crack')
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
