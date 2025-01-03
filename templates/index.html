@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Strength Checker</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="screen">
+    <div class="title">
+        <h1>Password Strength Checker</h1>
+    </div>
+    <div class="container">
         <div class="password-box">
             <label id="password-label" for="password">Enter your password here</label>
             <input id="password" type="text">
@@ -36,7 +40,7 @@
                         $('#strength').text(response.password_strength);
 
                         let strength = response.password_strength.toLowerCase();
-                        $('#strength').removeClass('weak medium strong').addClass(strength);
+                        $('#strength').removeClass('poor okay strong').addClass(strength);
 
                         $('#bits-of-entropy').text('Your password has ' + response.bits_of_entropy + ' bits of entropy')
                         $('#time-to-crack').text('Your password would take ' + response.time_to_crack + ' to crack')

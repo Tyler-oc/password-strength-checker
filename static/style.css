@@ -1,0 +1,98 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f7fc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.title{
+    margin-top: 15px;
+    margin-bottom: 150px;
+    width: 100%;
+    height: 100px;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 40px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.password-box {
+    margin-bottom: 20px;
+}
+
+#password-label {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#password {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#password:focus {
+    border-color: #0056b3;
+}
+
+.output-box {
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+#strength {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#bits-of-entropy{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#time-to-crack{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.poor{
+    color: red;
+}
+
+.okay{
+    color: orange;
+}
+
+.strong{
+    color: green;
+}

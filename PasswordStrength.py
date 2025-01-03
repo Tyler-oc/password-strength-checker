@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import math
 import re
-from num2words import num2words
+import humanize
 
-
-MAX_GUESSES_PER_SECOND = 1000000000
+MAX_GUESSES_PER_SECOND = 350000000000
 
 app = Flask(__name__, template_folder='templates')
 
@@ -58,20 +57,20 @@ def time_to_crack(entropy, password):
 
 def convert_time(seconds):
     if seconds < 60:
-        return num2words(round(seconds)) + ' seconds'
+        return humanize.intword(seconds) + ' seconds'
     minutes = seconds / 60
     if minutes < 60:
-        return num2words(round(minutes)) + ' minutes'
+        return humanize.intword(minutes) + ' minutes'
     hours = minutes / 60
     if hours < 24:
-        return num2words(round(hours)) + ' hours'
+        return humanize.intword(hours) + ' hours'
     days = hours / 24
     if days < 7:
-        return num2words(round(days)) + ' days'
+        return humanize.intword(days) + ' days'
     weeks = days / 7
     if weeks < 52:
-        return num2words(round(weeks)) + ' weeks'
-    return num2words(round(weeks / 52)) + ' years'
+        return humanize.intword(weeks) + ' weeks'
+    return humanize.intword(weeks / 52) + ' years'
 
 def has_lowercase_letter(password):
     return bool(re.search(r"[a-z]", password))
