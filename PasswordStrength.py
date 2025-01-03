@@ -4,6 +4,14 @@ import re
 import humanize
 
 MAX_GUESSES_PER_SECOND = 350000000000
+COMMON_WALKS = ['qwerty', '1234567890', '!23', '!@#$%^&*()', 'asdf', 'jkl;']
+
+#Generate a list of all possible substrings of 3 or more:
+common_substrings = set()
+for walk in COMMON_WALKS:
+    for i in range(len(walk)):
+        for j in range(i + 3, len(walk) + 1):
+            common_substrings.add(walk[i:j])
 
 app = Flask(__name__, template_folder='templates')
 
@@ -15,11 +23,13 @@ def index():
 def strength():
     password = request.json.get('password', '')
     entropy = bits_of_entropy(password)
+    adjusted_entropy = get_adjusted_entropy(password)
 
     return jsonify({
         'bits_of_entropy': entropy,
-        'password_strength': password_strength(entropy, password),
-        'time_to_crack' : time_to_crack(entropy, password)
+        'password_strength': password_strength(entropy, adjusted_entropy, password),
+        'time_to_crack' : time_to_crack(entropy, password),
+        'suggestions': get_suggestions(entropy, adjusted_entropy, password)
                     })
 
 
@@ -39,7 +49,9 @@ def bits_of_entropy(password):
     
     return round(len(password) * math.log2(character_range))
     
-def password_strength(entropy, password):
+def password_strength(entropy, adjusted_entropy, password):
+    if entropy - adjusted_entropy >= 15:
+        return 'Poor'
     if check_common_password(password):
         return 'Poor'
     if entropy >= 100:
@@ -94,6 +106,33 @@ def check_common_password(password):
                 return True
     return False
 
+
+def get_adjusted_entropy(password):
+    updated_password_list = []
+
+    for i in range(len(password)):
+        # Append the character if it's different from the last appended one
+        if not updated_password_list or updated_password_list[-1] != password[i]:
+            updated_password_list.append(password[i])
+
+    updated_password = ''.join(updated_password_list)
+
+    for substring in common_substrings:
+        if substring.lower() in password.lower():
+            updated_password = updated_password.replace(substring, substring[0])
+
+    return bits_of_entropy(updated_password)
+
+
+def get_suggestions(entropy, adjusted_entropy, password):
+    suggestions = []
+    if entropy - adjusted_entropy >= 15:
+        suggestions.append('Try to use less repeating characters or common keyboard walks')
+    if check_common_password(password):
+        suggestions.append('This is a very common password try to think of something more unique')
+
+    return suggestions
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
