@@ -22,11 +22,6 @@
             <p id="time-to-crack"></p>
             <div id="suggestions"></div>
         </div>
-        <div id="info">
-            <p>Note that this website only checks your passwords entropy and if it is a commonly found password.
-                There are other considerations to be made when creating a password.
-            </p>
-        </div>
     </div>
     <script>
         $(document).ready(function(){
@@ -51,7 +46,7 @@
                                 });
                         }
                         $('#bits-of-entropy').text('Your password has ' + response.bits_of_entropy + ' bits of entropy')
-                        $('#time-to-crack').text('Your password would take ' + response.time_to_crack + ' to crack')
+                        $('#time-to-crack').text('Your password would take about ' + response.time_to_crack + ' to crack')
                     }
                 })
             })
